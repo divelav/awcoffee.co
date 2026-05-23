@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AW Coffee — Nariño Origins · Precision Drying Technology</title>
+<meta name="description" content="Specialty green coffee from Nariño, Colombia. Precision-engineered drying technology for the next generation of coffee producers.">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Libre+Baskerville:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080706;
+    --dark: #0f0d0b;
+    --gold: #c9a84c;
+    --gold-dim: rgba(201,168,76,0.15);
+    --cream: #f2e8d5;
+    --cream-dim: #a89878;
+    --tech-blue: #4a7fa5;
+    --tech-blue-dim: rgba(74,127,165,0.12);
+    --border: rgba(201,168,76,0.18);
+    --border-light: rgba(255,255,255,0.07);
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Libre Baskerville', serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+    mix-blend-mode: difference;
+  }
+
+  .cursor-ring {
+    position: fixed;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(201,168,76,0.5);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.18s ease;
+  }
+
+  /* Noise overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9000;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: 28px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid transparent;
+    transition: all 0.4s ease;
+  }
+
+  nav.scrolled {
+    background: rgba(8,7,6,0.92);
+    border-bottom-color: var(--border);
+    backdrop-filter: blur(12px);
+    padding: 18px 60px;
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: var(--cream);
+    text-decoration: none;
+  }
+
+  .nav-logo em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 48px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 8px 20px;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .nav-cta:hover {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Left — Coffee */
+  .hero-left {
+    background: var(--dark);
+    padding: 160px 70px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    border-right: 1px solid var(--border);
+    cursor: none;
+  }
+
+  .hero-left::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 60%, rgba(201,168,76,0.06) 0%, transparent 65%);
+  }
+
+  /* Right — Technology */
+  .hero-right {
+    background: #060810;
+    padding: 160px 70px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: relative;
+    cursor: none;
+  }
+
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 70% 60%, rgba(74,127,165,0.07) 0%, transparent 65%);
+  }
+
+  /* Center divider */
+  .hero-divider {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .divider-mark {
+    width: 1px;
+    height: 80px;
+    background: linear-gradient(to bottom, transparent, var(--border), transparent);
+  }
+
+  .divider-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+
+  /* Section tag */
+  .section-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards;
+  }
+
+  .tag-gold { color: var(--gold); animation-delay: 0.3s; }
+  .tag-blue { color: var(--tech-blue); animation-delay: 0.5s; }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards;
+  }
+
+  .hero-left .hero-title {
+    font-size: clamp(48px, 5.5vw, 78px);
+    color: var(--cream);
+    animation-delay: 0.5s;
+  }
+
+  .hero-right .hero-title {
+    font-size: clamp(42px, 5vw, 70px);
+    color: #c8d8e8;
+    animation-delay: 0.7s;
+  }
+
+  .hero-title em {
+    font-style: italic;
+  }
+
+  .hero-left .hero-title em { color: var(--gold); }
+  .hero-right .hero-title em { color: var(--tech-blue); }
+
+  .hero-desc {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--cream-dim);
+    max-width: 360px;
+    margin-bottom: 40px;
+    font-weight: 400;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards;
+  }
+
+  .hero-left .hero-desc { animation-delay: 0.7s; }
+  .hero-right .hero-desc { animation-delay: 0.9s; color: #7a90a8; }
+
+  .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 14px 28px;
+    border: 1px solid;
+    transition: all 0.35s ease;
+    width: fit-content;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards;
+  }
+
+  .btn-gold {
+    color: var(--gold);
+    border-color: var(--gold);
+    animation-delay: 0.9s;
+  }
+
+  .btn-gold:hover {
+    background: var(--gold);
+    color: var(--black);
+  }
+
+  .btn-blue {
+    color: var(--tech-blue);
+    border-color: var(--tech-blue);
+    animation-delay: 1.1s;
+  }
+
+  .btn-blue:hover {
+    background: var(--tech-blue);
+    color: var(--black);
+  }
+
+  .btn-arrow {
+    transition: transform 0.3s ease;
+  }
+
+  .hero-btn:hover .btn-arrow { transform: translateX(6px); }
+
+  /* Stats strip */
+  .stats-strip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 1s ease 1.2s forwards;
+  }
+
+  .stat {
+    padding: 24px 32px;
+    border-right: 1px solid var(--border);
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .stat-val span {
+    font-size: 14px;
+    color: var(--gold);
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+
+  /* ── COFFEE SECTION ── */
+  .section-coffee {
+    padding: 120px 60px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .section-coffee::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(201,168,76,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .section-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 80px;
+    align-items: end;
+  }
+
+  .section-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .section-body {
+    font-size: 15px;
+    line-height: 1.85;
+    color: var(--cream-dim);
+    max-width: 460px;
+  }
+
+  .section-body p + p { margin-top: 16px; }
+
+  /* Lot highlights grid */
+  .lot-highlights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 48px;
+  }
+
+  .lot-card {
+    background: var(--dark);
+    padding: 36px 32px;
+    transition: background 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lot-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 32px; right: 32px;
+    height: 1px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+
+  .lot-card:hover { background: #141210; }
+  .lot-card:hover::after { transform: scaleX(1); }
+
+  .lot-score {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 48px;
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .lot-score-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    color: var(--cream-dim);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .lot-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+
+  .lot-origin {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--cream-dim);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .lot-notes {
+    font-size: 12px;
+    color: var(--cream-dim);
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  .catalog-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    padding-bottom: 4px;
+    transition: all 0.3s;
+  }
+
+  .catalog-link:hover {
+    border-bottom-color: var(--gold);
+    gap: 20px;
+  }
+
+  /* ── TECHNOLOGY SECTION ── */
+  .section-tech {
+    padding: 120px 60px;
+    background: #060810;
+    border-bottom: 1px solid rgba(74,127,165,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-tech::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(74,127,165,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .tech-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+    margin-top: 80px;
+  }
+
+  .tech-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--tech-blue);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .tech-eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--tech-blue);
+  }
+
+  .tech-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 56px);
+    font-weight: 300;
+    line-height: 1.05;
+    color: #c8d8e8;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+  }
+
+  .tech-title em { font-style: italic; color: var(--tech-blue); }
+
+  .tech-body {
+    font-size: 15px;
+    line-height: 1.85;
+    color: #7a90a8;
+    margin-bottom: 40px;
+  }
+
+  .tech-body p + p { margin-top: 16px; }
+
+  /* Specs panel */
+  .specs-panel {
+    background: rgba(74,127,165,0.05);
+    border: 1px solid rgba(74,127,165,0.2);
+    padding: 40px;
+  }
+
+  .specs-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--tech-blue);
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(74,127,165,0.15);
+  }
+
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(74,127,165,0.08);
+  }
+
+  .spec-row:last-child { border-bottom: none; }
+
+  .spec-key {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: #7a90a8;
+    text-transform: uppercase;
+  }
+
+  .spec-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: #c8d8e8;
+    font-style: italic;
+  }
+
+  /* Phases */
+  .phases {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 40px;
+  }
+
+  .phase {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 20px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(74,127,165,0.1);
+    align-items: start;
+  }
+
+  .phase-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--tech-blue);
+    opacity: 0.6;
+    margin-top: 2px;
+  }
+
+  .phase-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: #c8d8e8;
+    margin-bottom: 6px;
+  }
+
+  .phase-desc {
+    font-size: 13px;
+    color: #7a90a8;
+    line-height: 1.7;
+  }
+
+  /* ── CONTACT ── */
+  .section-contact {
+    padding: 100px 60px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    border-top: 1px solid var(--border);
+  }
+
+  .contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 52px);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+
+  .contact-title em { font-style: italic; color: var(--gold); }
+
+  .contact-body {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--cream-dim);
+    margin-bottom: 40px;
+  }
+
+  .contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .contact-item {
+    display: flex;
+    gap: 20px;
+    align-items: baseline;
+  }
+
+  .contact-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    min-width: 60px;
+  }
+
+  .contact-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    color: var(--cream);
+  }
+
+  .contact-val a {
+    color: var(--gold);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(201,168,76,0.3);
+    transition: border-color 0.3s;
+  }
+
+  .contact-val a:hover { border-bottom-color: var(--gold); }
+
+  .contact-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .contact-btn {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 22px 32px;
+    border: 1px solid;
+    text-decoration: none;
+    transition: all 0.35s ease;
+    font-family: inherit;
+  }
+
+  .contact-btn-coffee {
+    border-color: var(--border);
+    color: var(--cream);
+  }
+
+  .contact-btn-coffee:hover {
+    border-color: var(--gold);
+    background: var(--gold-dim);
+  }
+
+  .contact-btn-tech {
+    border-color: rgba(74,127,165,0.2);
+    color: #c8d8e8;
+  }
+
+  .contact-btn-tech:hover {
+    border-color: var(--tech-blue);
+    background: var(--tech-blue-dim);
+  }
+
+  .btn-icon {
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .btn-text { flex: 1; }
+
+  .btn-text strong {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 400;
+    margin-bottom: 2px;
+  }
+
+  .btn-text small {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 40px 60px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--cream-dim);
+  }
+
+  .footer-logo em { font-style: italic; color: var(--gold); }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--cream-dim);
+    opacity: 0.5;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .footer-links a {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    text-decoration: none;
+    opacity: 0.6;
+    transition: opacity 0.3s;
+  }
+
+  .footer-links a:hover { opacity: 1; color: var(--gold); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    nav.scrolled { padding: 14px 24px; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-left, .hero-right { padding: 100px 32px 60px; }
+    .hero-divider { display: none; }
+    .stats-strip { grid-template-columns: repeat(2, 1fr); position: relative; }
+    .section-coffee, .section-tech, .section-contact { padding: 80px 24px; }
+    .section-header, .tech-grid, .section-contact { grid-template-columns: 1fr; gap: 40px; }
+    .lot-highlights { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 20px; text-align: center; padding: 32px 24px; }
+    .footer-links { justify-content: center; }
+    body { cursor: auto; }
+    .cursor, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="/" class="nav-logo">AW<em>Coffee</em></a>
+  <ul class="nav-links">
+    <li><a href="#coffee">Green Coffee</a></li>
+    <li><a href="#technology">Technology</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="catalog.html" class="nav-cta">View Catalog</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <div class="hero-left">
+    <div class="section-tag tag-gold">Specialty Green Coffee · Nariño, Colombia</div>
+    <h1 class="hero-title">
+      Microlots<br>
+      from the <em>edge</em><br>
+      of the world
+    </h1>
+    <p class="hero-desc">
+      Fourteen extraordinary lots from the high-altitude origins of Nariño. Geisha, Caturra, Castillo — processed with precision, offered directly to the world's finest roasters.
+    </p>
+    <a href="catalog.html" class="hero-btn btn-gold">
+      Explore the catalog
+      <span class="btn-arrow">→</span>
+    </a>
+  </div>
+
+  <div class="hero-right">
+    <div class="section-tag tag-blue">Hybrid Thermodynamic Drying · R&D</div>
+    <h1 class="hero-title">
+      Engineering<br>
+      <em>precision</em><br>
+      into every bean
+    </h1>
+    <p class="hero-desc">
+      A controlled hybrid drying system that eliminates variability. Designed for the Colombian highlands — where altitude, humidity, and temperature demand a smarter solution.
+    </p>
+    <a href="#technology" class="hero-btn btn-blue">
+      Explore the technology
+      <span class="btn-arrow">→</span>
+    </a>
+  </div>
+
+  <div class="hero-divider">
+    <div class="divider-mark"></div>
+    <div class="divider-dot"></div>
+    <div class="divider-mark"></div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-strip">
+    <div class="stat">
+      <div class="stat-val">14 <span>lots</span></div>
+      <div class="stat-label">Current Offering</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">90 <span>pts</span></div>
+      <div class="stat-label">Highest Score</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">1,800<span>m+</span></div>
+      <div class="stat-label">Altitude</div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">EXW <span>CO</span></div>
+      <div class="stat-label">Green Beans</div>
+    </div>
+  </div>
+
+</section>
+
+<!-- COFFEE SECTION -->
+<section class="section-coffee" id="coffee">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-eyebrow">Specialty Green Coffee</div>
+      <h2 class="section-title">
+        Where altitude<br>
+        becomes <em>flavor</em>
+      </h2>
+    </div>
+    <div class="section-body">
+      <p>Nariño sits at the southwestern tip of the Colombian Andes — volcanic soils, equatorial light, and cold nights that slow the cherry's development to a point where complexity becomes inevitable.</p>
+      <p>We source directly from producers in La Unión, Buesaco, Aponte, Pompeya, Belén, and El Carmen. Every lot is traceable, cupped, and offered with full process documentation.</p>
+    </div>
+  </div>
+
+  <!-- 3 featured lots -->
+  <div class="lot-highlights reveal">
+    <div class="lot-card">
+      <div class="lot-score">90</div>
+      <div class="lot-score-label">SCA Score</div>
+      <div class="lot-name">Geisha Pompeya Village</div>
+      <div class="lot-origin">Pompeya, Nariño · Rehydrated Double Washed</div>
+      <div class="lot-notes">Raspberries · Pomegranate · Orange Blossom · Jasmine · Lemon</div>
+    </div>
+    <div class="lot-card">
+      <div class="lot-score">89</div>
+      <div class="lot-score-label">SCA Score</div>
+      <div class="lot-name">Geisha La Reina</div>
+      <div class="lot-origin">Belén, Nariño · 24h Oxidation + 48h Anaerobic</div>
+      <div class="lot-notes">Black Tea · Wild Honey · Lavender · Green Grape</div>
+    </div>
+    <div class="lot-card">
+      <div class="lot-score">88</div>
+      <div class="lot-score-label">SCA Score</div>
+      <div class="lot-name">Geisha La Golondrina</div>
+      <div class="lot-origin">Buesaco, Nariño · Washed Yeast Must</div>
+      <div class="lot-notes">Lavender · Jasmine · Peach · Orange Peel · Caramel</div>
+    </div>
+  </div>
+
+  <div class="reveal">
+    <a href="catalog.html" class="catalog-link">
+      View all 14 lots with full tasting notes <span>→</span>
+    </a>
+  </div>
+</section>
+
+<!-- TECHNOLOGY SECTION -->
+<section class="section-tech" id="technology">
+  <div class="tech-eyebrow reveal">Hybrid Thermodynamic Drying System</div>
+  <h2 class="tech-title reveal">
+    Controlled drying.<br>
+    <em>Engineered</em> for the highlands.
+  </h2>
+
+  <div class="tech-grid">
+    <div>
+      <div class="tech-body reveal">
+        <p>Post-harvest variability is one of the largest sources of quality loss in Colombian specialty coffee. Uncontrolled drying — subject to rain, humidity spikes, and temperature swings — creates inconsistency that no cupping can recover.</p>
+        <p>Our hybrid thermodynamic system combines solar passive collection with active temperature and humidity control to maintain optimal drying curves regardless of outdoor conditions. The result is measurable, repeatable quality at the farm level.</p>
+      </div>
+
+      <div class="phases reveal">
+        <div class="phase">
+          <div class="phase-num">01</div>
+          <div>
+            <div class="phase-name">Solar Passive Collection</div>
+            <div class="phase-desc">Polycarbonate and thermal mass panels capture ambient solar energy, pre-heating the drying environment without mechanical energy input.</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-num">02</div>
+          <div>
+            <div class="phase-name">Active Thermodynamic Control</div>
+            <div class="phase-desc">Heat pump technology maintains target temperature and vapor pressure differential with ±0.5°C precision across the drying bed.</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-num">03</div>
+          <div>
+            <div class="phase-name">IoT Monitoring & Logging</div>
+            <div class="phase-desc">Continuous sensor array tracks temperature, relative humidity, and water activity (a_w) at multiple bed depths. Data logged for traceability.</div>
+          </div>
+        </div>
+        <div class="phase">
+          <div class="phase-num">04</div>
+          <div>
+            <div class="phase-name">Target: a_w ≤ 0.60</div>
+            <div class="phase-desc">Drying terminates at the optimal water activity threshold — eliminating mold risk while preserving volatile aromatic compounds.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="specs-panel reveal">
+        <div class="specs-title">System Specifications — Phase I</div>
+        <div class="spec-row">
+          <span class="spec-key">System Type</span>
+          <span class="spec-val">Hybrid Solar + Heat Pump</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Target a_w</span>
+          <span class="spec-val">≤ 0.60</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Temp Control</span>
+          <span class="spec-val">±0.5°C precision</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Altitude Range</span>
+          <span class="spec-val">1,500 – 2,200 m.s.n.m.</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Capacity Phase I</span>
+          <span class="spec-val">500 – 2,000 kg / cycle</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Monitoring</span>
+          <span class="spec-val">IoT · Real-time logging</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Energy Source</span>
+          <span class="spec-val">Solar passive + grid backup</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-key">Status</span>
+          <span class="spec-val">R&D · Seeking partners</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section-contact" id="contact">
+  <div class="reveal">
+    <h2 class="contact-title">
+      Start a<br>
+      <em>conversation</em>
+    </h2>
+    <p class="contact-body">
+      Whether you're sourcing green coffee for the next season or exploring partnership opportunities for the drying technology — we respond within 24 hours.
+    </p>
+    <div class="contact-details">
+      <div class="contact-item">
+        <span class="contact-label">Email</span>
+        <span class="contact-val"><a href="mailto:davela@awcoffee.co">davela@awcoffee.co</a></span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Phone</span>
+        <span class="contact-val">+57 320 455 8568</span>
+      </div>
+      <div class="contact-item">
+        <span class="contact-label">Origin</span>
+        <span class="contact-val">Nariño · Colombia</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-actions reveal">
+    <a href="mailto:davela@awcoffee.co?subject=Green Coffee Inquiry" class="contact-btn contact-btn-coffee">
+      <span class="btn-icon">☕</span>
+      <span class="btn-text">
+        <strong>Request Green Coffee Samples</strong>
+        <small>Cupping notes · Lot availability · Pricing</small>
+      </span>
+      <span>→</span>
+    </a>
+    <a href="mailto:davela@awcoffee.co?subject=Drying Technology Partnership" class="contact-btn contact-btn-tech">
+      <span class="btn-icon">⚙</span>
+      <span class="btn-text">
+        <strong>Explore Technology Partnership</strong>
+        <small>R&D · Investment · Technical collaboration</small>
+      </span>
+      <span>→</span>
+    </a>
+    <a href="catalog.html" class="contact-btn contact-btn-coffee">
+      <span class="btn-icon">📋</span>
+      <span class="btn-text">
+        <strong>View Interactive Catalog</strong>
+        <small>14 lots · Full tasting profiles</small>
+      </span>
+      <span>→</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">AW<em>Coffee</em></div>
+  <ul class="footer-links">
+    <li><a href="#coffee">Green Coffee</a></li>
+    <li><a href="#technology">Technology</a></li>
+    <li><a href="catalog.html">Catalog</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 awcoffee.co · Nariño, Colombia</div>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top = e.clientY + 'px';
+    }, 60);
+  });
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '60px';
+      ring.style.height = '60px';
+      ring.style.borderColor = 'rgba(201,168,76,0.8)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+      ring.style.borderColor = 'rgba(201,168,76,0.5)';
+    });
+  });
+
+  // Nav scroll
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

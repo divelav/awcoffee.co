@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AW Coffee — Nariño Origins Specialty Catalog</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Helvetica+Neue:wght@300;400&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --espresso: #0d0b08;
+    --dark: #141210;
+    --card-bg: #1a1714;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f0e8d8;
+    --cream-dim: #b8a98a;
+    --accent-green: #4a6741;
+    --border: rgba(201,168,76,0.2);
+    --border-hover: rgba(201,168,76,0.6);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--espresso);
+    color: var(--cream);
+    font-family: 'Helvetica Neue', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.6;
+  }
+
+  /* Header */
+  header {
+    padding: 80px 60px 60px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+    animation: fadeDown 1.2s ease forwards;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 60px;
+    width: 120px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  .header-tag {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0.8;
+  }
+
+  .brand-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+  }
+
+  .brand-name em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .header-sub {
+    margin-top: 24px;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    max-width: 500px;
+    line-height: 2;
+  }
+
+  .header-meta {
+    position: absolute;
+    top: 80px;
+    right: 60px;
+    text-align: right;
+    font-size: 11px;
+    color: var(--cream-dim);
+    line-height: 2;
+    letter-spacing: 0.08em;
+  }
+
+  .header-meta .exw {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 4px 12px;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-top: 12px;
+  }
+
+  /* Filter bar */
+  .filter-bar {
+    padding: 28px 60px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    animation: fadeDown 1.4s ease forwards;
+  }
+
+  .filter-label {
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    margin-right: 8px;
+  }
+
+  .filter-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--cream-dim);
+    padding: 6px 18px;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(201,168,76,0.06);
+  }
+
+  /* Score badge */
+  .score-ring {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .score-ring svg {
+    width: 60px;
+    height: 60px;
+    transform: rotate(-90deg);
+  }
+
+  .score-ring circle {
+    fill: none;
+    stroke-width: 2;
+  }
+
+  .score-ring .bg { stroke: rgba(201,168,76,0.15); }
+  .score-ring .fg { stroke: var(--gold); stroke-linecap: round; }
+
+  .score-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gold);
+    text-align: center;
+    line-height: 1;
+  }
+
+  .score-label {
+    font-size: 7px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    display: block;
+  }
+
+  /* Grid */
+  .catalog-grid {
+    padding: 48px 60px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2px;
+  }
+
+  /* Card */
+  .coffee-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    animation: fadeUp 0.8s ease forwards;
+    opacity: 0;
+  }
+
+  .coffee-card:nth-child(1)  { animation-delay: 0.1s; }
+  .coffee-card:nth-child(2)  { animation-delay: 0.15s; }
+  .coffee-card:nth-child(3)  { animation-delay: 0.2s; }
+  .coffee-card:nth-child(4)  { animation-delay: 0.25s; }
+  .coffee-card:nth-child(5)  { animation-delay: 0.3s; }
+  .coffee-card:nth-child(6)  { animation-delay: 0.35s; }
+  .coffee-card:nth-child(7)  { animation-delay: 0.4s; }
+  .coffee-card:nth-child(8)  { animation-delay: 0.45s; }
+  .coffee-card:nth-child(9)  { animation-delay: 0.5s; }
+  .coffee-card:nth-child(10) { animation-delay: 0.55s; }
+  .coffee-card:nth-child(11) { animation-delay: 0.6s; }
+  .coffee-card:nth-child(12) { animation-delay: 0.65s; }
+  .coffee-card:nth-child(13) { animation-delay: 0.7s; }
+  .coffee-card:nth-child(14) { animation-delay: 0.75s; }
+
+  .coffee-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.04) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .coffee-card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-4px);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,168,76,0.1);
+    z-index: 2;
+  }
+
+  .coffee-card:hover::before { opacity: 1; }
+
+  /* Card body */
+  .card-body {
+    padding: 28px 24px 24px;
+    flex: 1;
+  }
+
+  .card-number {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    opacity: 0.6;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--cream);
+    margin-bottom: 6px;
+    letter-spacing: 0.01em;
+  }
+
+  .card-origin {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    margin-bottom: 20px;
+  }
+
+  /* Variety + process tags */
+  .card-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .tag {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border: 1px solid;
+  }
+
+  .tag-variety {
+    border-color: rgba(201,168,76,0.4);
+    color: var(--gold);
+  }
+
+  .tag-process {
+    border-color: rgba(255,255,255,0.12);
+    color: var(--cream-dim);
+  }
+
+  /* Flavor notes */
+  .flavor-section {
+    margin-bottom: 20px;
+  }
+
+  .flavor-label {
+    font-size: 8px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    margin-bottom: 10px;
+    opacity: 0.7;
+  }
+
+  .flavor-notes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .note {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--cream);
+    opacity: 0.75;
+    white-space: nowrap;
+  }
+
+  .note::after {
+    content: '·';
+    margin-left: 6px;
+    color: var(--gold);
+    font-style: normal;
+    opacity: 0.5;
+  }
+
+  .note:last-child::after { display: none; }
+
+  /* Card footer */
+  .card-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .avail-block .avail-label {
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--cream-dim);
+    display: block;
+    margin-bottom: 3px;
+  }
+
+  .avail-block .avail-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cream);
+  }
+
+  .inquiry-cta {
+    text-align: right;
+  }
+
+  .inquire-btn {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  .inquire-btn:hover {
+    background: var(--gold);
+    color: var(--espresso);
+  }
+
+  /* Geisha badge */
+  .geisha-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: var(--gold);
+    color: var(--espresso);
+    font-size: 7px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    font-weight: 500;
+  }
+
+  /* Featured card (score 89-90) */
+  .coffee-card.featured {
+    border-color: rgba(201,168,76,0.35);
+    grid-column: span 1;
+  }
+
+  .coffee-card.featured .card-title {
+    font-size: 26px;
+  }
+
+  /* Footer */
+  footer {
+    padding: 48px 60px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: gap;
+  }
+
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--cream-dim);
+    margin-bottom: 8px;
+  }
+
+  .footer-contact {
+    font-size: 11px;
+    color: var(--cream-dim);
+    line-height: 2;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-contact a {
+    color: var(--gold);
+    text-decoration: none;
+  }
+
+  .footer-right {
+    text-align: right;
+    font-size: 10px;
+    color: var(--cream-dim);
+    letter-spacing: 0.15em;
+    line-height: 2.5;
+  }
+
+  .footer-right .quality-note {
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    margin-top: 12px;
+    font-size: 9px;
+    opacity: 0.7;
+  }
+
+  /* Divider line for showcase section */
+  .section-divider {
+    padding: 0 60px 24px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    animation: fadeDown 1.6s ease forwards;
+  }
+
+  .section-divider span {
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Scroll reveal via Intersection Observer style fallback */
+  .coffee-card { opacity: 0; }
+  .coffee-card.visible { opacity: 1; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    header, .filter-bar, .catalog-grid, footer { padding-left: 24px; padding-right: 24px; }
+    .catalog-grid { grid-template-columns: 1fr; }
+    .header-meta { display: none; }
+    .brand-name { font-size: 48px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">Single Origin · Nariño, Colombia · Green Beans EXW</div>
+  <div class="brand-name">AW<br><em>Coffee</em></div>
+  <div class="header-sub">
+    Specialty Microlots from the high altitude origins of Nariño<br>
+    Connecting extraordinary producers to the world's finest roasters
+  </div>
+  <div class="header-meta">
+    AW Coffee · awcoffee.co<br>
+    Nariño · Colombia<br>
+    +57 320 455 8568<br>
+    davela@awcoffee.co<br>
+    <span class="exw">Green Beans · EXW Colombia</span>
+  </div>
+</header>
+
+<div class="filter-bar">
+  <span class="filter-label">Filter by</span>
+  <button class="filter-btn active" data-filter="all">All Lots</button>
+  <button class="filter-btn" data-filter="geisha">Geisha</button>
+  <button class="filter-btn" data-filter="washed">Washed</button>
+  <button class="filter-btn" data-filter="honey">Honey</button>
+  <button class="filter-btn" data-filter="natural">Natural</button>
+
+</div>
+
+<div class="section-divider">
+  <span>Current Offering — 14 Lots Available</span>
+</div>
+
+<div class="catalog-grid" id="grid">
+</div>
+
+<footer>
+  <div>
+    <div class="footer-brand">AW Coffee</div>
+    <div class="footer-contact">
+      davela@awcoffee.co &nbsp;·&nbsp; +57 320 455 8568<br>
+      Pasto, Nariño · Colombia<br>
+      <a href="mailto:davela@awcoffee.co">Request samples or full cupping notes →</a>
+    </div>
+  </div>
+  <div class="footer-right">
+    <div>Green Beans · EXW Colombia</div>
+    <div>Inquire for pricing & samples</div>
+    <div class="quality-note">
+      Geisha quality standard: 0:20 or 2:10<br>
+      All other coffees: 8:35
+    </div>
+  </div>
+</footer>
+
+<script>
+const coffees = [
+  {
+    id: 1,
+    name: "Geisha La Golondrina",
+    origin: "Buesaco, Nariño",
+    variety: "Geisha",
+    process: "Washed · Yeast Must",
+    processShort: "washed",
+    flavors: ["Lavender", "Jasmine", "Peach", "Orange Peel", "Caramel", "Lemonade"],
+    score: 88,
+    availability: "1.000 kg",
+    price: "8.5",
+    priceType: "fixed",
+    isGeisha: true
+  },
+  {
+    id: 2,
+    name: "Geisha Aponte Blend",
+    origin: "Aponte Village, Nariño",
+    variety: "Geisha",
+    process: "Washed · Yeast Must",
+    processShort: "washed",
+    flavors: ["Orange Blossom", "Jasmine", "Lemon", "Tea-Like Body"],
+    score: 88,
+    availability: "2.500 kg",
+    price: "8.0",
+    priceType: "fixed",
+    isGeisha: true
+  },
+  {
+    id: 3,
+    name: "Geisha Blend Nariño",
+    origin: "Nariño",
+    variety: "Geisha",
+    process: "Washed Traditional",
+    processShort: "washed",
+    flavors: ["Honey", "Peach", "Caramel", "Lemon Tea"],
+    score: 85.5,
+    availability: "7.800 kg",
+    price: "7.0",
+    priceType: "fixed",
+    isGeisha: true
+  },
+  {
+    id: 4,
+    name: "Late Harvest Blend Washed",
+    origin: "Santa María Buesaco, Nariño",
+    variety: "Various",
+    process: "Washed 48h · Oxidation",
+    processShort: "washed",
+    flavors: ["Red Apple", "Juicy Pear", "Winey", "Balanced"],
+    score: 86.5,
+    availability: "10.000 kg",
+    price: "NYC+160¢",
+    priceType: "nyc",
+    isGeisha: false
+  },
+  {
+    id: 5,
+    name: "Caturra Floral",
+    origin: "Aponte Village, Nariño",
+    variety: "Caturra",
+    process: "Washed · Indigenous Yeast",
+    processShort: "washed",
+    flavors: ["Lemongrass", "Lavender", "White Pepper", "Orange Peel", "Caramel"],
+    score: 87,
+    availability: "11.000 kg",
+    price: "NYC+160¢",
+    priceType: "nyc",
+    isGeisha: false
+  },
+  {
+    id: 6,
+    name: "Caturra Pompeya",
+    origin: "Pompeya, Nariño",
+    variety: "Caturra",
+    process: "Washed Traditional",
+    processShort: "washed",
+    flavors: ["Citrus", "Mint", "Lemon Tea", "Brown Sugar"],
+    score: 87,
+    availability: "9.500 kg",
+    price: "NYC+160¢",
+    priceType: "nyc",
+    isGeisha: false
+  },
+  {
+    id: 7,
+    name: "Geisha B Buesaco",
+    origin: "Buesaco, Nariño",
+    variety: "Geisha",
+    process: "Semi-Washed · 48h Fermentation",
+    processShort: "washed",
+    flavors: ["White Sugar", "Peach", "Rose", "Honeysuckle"],
+    score: 88,
+    availability: "200 kg",
+    price: "8.5",
+    priceType: "fixed",
+    isGeisha: true
+  },
+  {
+    id: 8,
+    name: "Geisha La Reina",
+    origin: "Belén, Nariño",
+    variety: "Geisha",
+    process: "24h Oxidation + 48h Anaerobic",
+    processShort: "washed",
+    flavors: ["Black Tea", "Wild Honey", "Lavender", "Green Grape"],
+    score: 89,
+    availability: "300 kg",
+    price: "15.0",
+    priceType: "fixed",
+    isGeisha: true,
+    featured: true
+  },
+  {
+    id: 9,
+    name: "El Paseo Signature",
+    origin: "Buesaco, Nariño",
+    variety: "Castillo",
+    process: "Washed Extended Fermentation",
+    processShort: "washed",
+    flavors: ["Cinnamon Rolls", "Milky Cake", "Vanilla", "Brown Sugar", "Raisins"],
+    score: 86.5,
+    availability: "7.200 kg",
+    price: "NYC+160¢",
+    priceType: "nyc",
+    isGeisha: false
+  },
+  {
+    id: 10,
+    name: "Geisha Pompeya Village",
+    origin: "Pompeya, Nariño",
+    variety: "Geisha",
+    process: "Rehydrated Double Washed",
+    processShort: "washed",
+    flavors: ["Raspberries", "Pomegranate", "Orange Blossom", "Jasmine", "Lemon"],
+    score: 90,
+    availability: "1.800 kg",
+    price: "9.5",
+    priceType: "fixed",
+    isGeisha: true,
+    featured: true
+  },
+  {
+    id: 11,
+    name: "Natural El Paseo",
+    origin: "Buesaco, Nariño",
+    variety: "Castillo",
+    process: "Natural · Blackberry Juice",
+    processShort: "natural",
+    flavors: ["Blackberry Jam", "Raisins", "Red Plum", "Red Apple", "Chocolate"],
+    score: 86.5,
+    availability: "8.000 kg",
+    price: "7.3",
+    priceType: "fixed",
+    isGeisha: false
+  },
+  {
+    id: 12,
+    name: "Honey Mora",
+    origin: "Aponte Village, Nariño",
+    variety: "Caturra · Castillo",
+    process: "Honey · Blackberry Juice",
+    processShort: "honey",
+    flavors: ["Red Wine", "Caramel", "Dried Blueberries", "Lemon"],
+    score: 87,
+    availability: "12.000 kg",
+    price: "6.0",
+    priceType: "fixed",
+    isGeisha: false
+  },
+  {
+    id: 13,
+    name: "Geisha Koapi",
+    origin: "Coapitas Buesaco, Nariño",
+    variety: "Geisha",
+    process: "Washed Traditional",
+    processShort: "washed",
+    flavors: ["Honey", "Rose Tea", "Lime", "Tangerine", "Silky Floral Finish"],
+    score: 87,
+    availability: "800 kg",
+    price: "8.5",
+    priceType: "fixed",
+    isGeisha: true
+  },
+  {
+    id: 14,
+    name: "Honey Aponte",
+    origin: "Aponte Village, Nariño",
+    variety: "Caturra",
+    process: "Honey",
+    processShort: "honey",
+    flavors: ["Citrus", "Peach Tea", "Orange Blossom", "Honey", "Sugar"],
+    score: 86.5,
+    availability: "7.000 kg",
+    price: "6.0",
+    priceType: "fixed",
+    isGeisha: false
+  }
+];
+
+function scoreToPercent(score) {
+  // Map 80-100 range to 0-100%
+  return Math.min(100, Math.max(0, (score - 80) / 20 * 100));
+}
+
+function buildCard(coffee) {
+  const pct = scoreToPercent(coffee.score);
+  const r = 28;
+  const circ = 2 * Math.PI * r;
+  const dash = (pct / 100) * circ;
+
+  const tags = `
+    <div class="card-tags">
+      <span class="tag tag-variety">${coffee.variety}</span>
+      <span class="tag tag-process">${coffee.process}</span>
+    </div>
+  `;
+
+  const flavors = coffee.flavors.map(f => `<span class="note">${f}</span>`).join('');
+
+  return `
+    <div class="coffee-card ${coffee.featured ? 'featured' : ''}"
+         data-variety="${coffee.variety.toLowerCase()}"
+         data-process="${coffee.processShort}"
+         data-pricetype="${coffee.priceType}">
+      ${coffee.isGeisha ? '<div class="geisha-badge">Geisha</div>' : ''}
+      
+      <div class="score-ring">
+        <svg viewBox="0 0 60 60">
+          <circle class="bg" cx="30" cy="30" r="${r}" />
+          <circle class="fg" cx="30" cy="30" r="${r}"
+            stroke-dasharray="${dash.toFixed(2)} ${circ.toFixed(2)}" />
+        </svg>
+        <div class="score-value">
+          ${coffee.score}
+          <span class="score-label">SCA</span>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-number">Lot #${String(coffee.id).padStart(2,'0')}</div>
+        <div class="card-title">${coffee.name}</div>
+        <div class="card-origin">${coffee.origin}</div>
+        ${tags}
+        <div class="flavor-section">
+          <div class="flavor-label">Tasting Notes</div>
+          <div class="flavor-notes">${flavors}</div>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <div class="avail-block">
+          <span class="avail-label">Available</span>
+          <span class="avail-val">${coffee.availability}</span>
+        </div>
+        <div class="inquiry-cta">
+          <a href="mailto:davela@awcoffee.co?subject=Inquiry: ${encodeURIComponent(coffee.name)}" class="inquire-btn">Inquire →</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Render
+const grid = document.getElementById('grid');
+coffees.forEach(c => { grid.innerHTML += buildCard(c); });
+
+// Filter logic
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.dataset.filter;
+    document.querySelectorAll('.coffee-card').forEach(card => {
+      if (filter === 'all') {
+        card.style.display = '';
+      } else if (filter === 'geisha') {
+        card.style.display = card.dataset.variety.includes('geisha') ? '' : 'none';
+      } else if (filter === 'washed') {
+        card.style.display = card.dataset.process === 'washed' ? '' : 'none';
+      } else if (filter === 'honey') {
+        card.style.display = card.dataset.process === 'honey' ? '' : 'none';
+      } else if (filter === 'natural') {
+        card.style.display = card.dataset.process === 'natural' ? '' : 'none';
+      }
+    });
+  });
+});
+
+// Scroll animation
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.coffee-card').forEach(c => observer.observe(c));
+</script>
+</body>
+</html>
